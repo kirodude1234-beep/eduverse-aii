@@ -29,7 +29,6 @@ export default function AITutor() {
   const [showSettings, setShowSettings] = useState(false);
   
   const [isSoundOn, setIsSoundOn] = useState(false);
-
   const [showSummarizer, setShowSummarizer] = useState(false);
 
   useEffect(() => {
@@ -251,13 +250,13 @@ export default function AITutor() {
             </h2>
         </div>
         <div className="flex gap-4">
-            <button 
+            <button
                 onClick={() => setShowSummarizer(true)}
-                className="px-4 py-2 rounded-xl bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 active:scale-95 transition-all text-xs font-bold uppercase tracking-widest hidden md:flex items-center gap-2 cursor-pointer border-b-2 border-purple-500/30"
+                className="px-4 py-2 rounded-xl bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 active:scale-95 transition-all text-xs font-bold uppercase tracking-widest flex items-center gap-2 cursor-pointer border-b-2 border-purple-500/30"
             >
                 <Sparkles size={14} /> Summarize
             </button>
-            <button onClick={() => setShowSettings(true)} className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-all text-white/80 gap-2 items-center text-xs font-bold uppercase tracking-widest hidden md:flex cursor-pointer border border-transparent active:border-cyan-500/50">
+            <button onClick={() => setShowSettings(true)} className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-all text-white/50 hover:text-white gap-2 items-center text-xs font-bold uppercase tracking-widest hidden md:flex cursor-pointer border border-transparent active:border-cyan-500/50">
                 <Settings size={14} /> Settings
             </button>
             <button 
@@ -340,14 +339,6 @@ export default function AITutor() {
                )}
                </AnimatePresence>
 
-               {/* Mobile/Compact Summarize Button */}
-               <button 
-                onClick={() => setShowSummarizer(true)}
-                className="md:hidden w-full mb-3 py-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2"
-               >
-                  <Sparkles size={12} /> Summarize Conversation
-               </button>
-
                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-[2rem] blur-xl opacity-50 group-focus-within:opacity-100 transition-opacity" />
                
                <div className="relative flex items-center bg-white/5 hover:bg-white/[0.07] border border-white/10 rounded-full p-1 w-full transition-all duration-300">
@@ -356,11 +347,11 @@ export default function AITutor() {
                    <button onClick={sendMessage} disabled={isLoading || (!input.trim() && !selectedImage)} className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all disabled:opacity-20 shrink-0 shadow-lg shadow-white/10"><Send size={16} className="ml-0.5" /></button>
                </div>
             </div>
-            <p className="text-center text-[9px] text-white/10 uppercase tracking-[0.2em]">StudyMate AI • Powered by Llama 3 & Groq Cloud</p>
+            <p className="text-center text-[9px] text-white/10 uppercase tracking-[0.2em]">StudyMate AI • Powered by Llama 3.3 & Groq Cloud</p>
          </div>
       </footer>
 
-      {/* The Ghost of the Summarizer Solution */}
+      {/* The AI Summarizer Modal (Overlap-Proof) */}
       <AnimatePresence>
           {showSummarizer && (
               <ChatSummarizerModal onClose={() => setShowSummarizer(false)} />
