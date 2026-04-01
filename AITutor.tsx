@@ -257,9 +257,9 @@ export default function AITutor() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto w-full hide-scroll scroll-smooth pt-4 md:pt-8 relative z-0 pb-4">
-         <div className="max-w-3xl mx-auto w-full px-4 md:px-8 space-y-6 md:space-y-8">
-            
+      {/* Messages Area */}
+      <div className="flex-1 overflow-y-auto w-full hide-scroll scroll-smooth pt-4 md:pt-8 bg-transparent pb-4 relative z-0">
+         <div className="max-w-3xl mx-auto w-full px-4 md:px-8 space-y-6 md:space-y-8 min-h-full">
             {messages.length === 1 && (
                 <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} className="flex flex-col items-center justify-center py-10 md:py-20 opacity-80">
                     <div className="w-16 h-16 md:w-20 md:h-20 bg-cyan-500/10 rounded-full flex items-center justify-center mb-4 md:mb-6">
@@ -271,47 +271,26 @@ export default function AITutor() {
             )}
 
             {messages.map((msg, i) => (
-               <motion.div 
-                 initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }}
-                 key={i} 
-                 className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}
-               >
+               <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} key={i} className={`flex w-full ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                  <div className="flex gap-3 md:gap-4 max-w-[95%] md:max-w-[85%]">
                     {msg.role === 'assistant' && (
                         <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-cyan-500 flex items-center justify-center shrink-0 mt-1 shadow-[0_0_10px_rgba(34,211,238,0.3)]">
                             <Bot size={14} className="text-[#0a0a0a]" />
                         </div>
                     )}
-                    
                     <div className={`p-4 md:p-5 text-[14px] md:text-[15px] leading-relaxed rounded-2xl shadow-lg border border-white/5 flex flex-col gap-3 relative group/msg ${msg.role === 'user' ? 'bg-cyan-500 text-black rounded-tr-sm font-medium' : 'bg-white/5 text-white/90 backdrop-blur-md rounded-tl-sm'}`}>
                         {msg.image && (
                             <img src={msg.image} alt="Uploaded file" className="w-[200px] h-auto rounded-xl object-cover shadow-md border border-black/20" />
                         )}
                         {msg.role === 'assistant' ? (
                             <>
-                                <button 
-                                    onClick={() => {
-                                        navigator.clipboard.writeText(msg.content);
-                                        const btn = document.getElementById(`copy-${i}`);
-                                        if (btn) {
-                                            btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-green-400"><polyline points="20 6 9 17 4 12"></polyline></svg> Copied';
-                                            setTimeout(() => {
-                                                btn.innerHTML = '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"></rect><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"></path></svg> Copy';
-                                            }, 2000);
-                                        }
-                                    }}
-                                    id={`copy-${i}`}
-                                    className="absolute top-2 right-2 opacity-0 group-hover/msg:opacity-100 transition-opacity flex items-center gap-1.5 px-2 py-1 bg-white/10 hover:bg-white/20 rounded-md text-[10px] uppercase font-bold text-white/60 hover:text-white cursor-pointer"
-                                >
-                                    <Copy size={12} /> Copy
-                                </button>
+                                <button onClick={() => { navigator.clipboard.writeText(msg.content); const btn = document.getElementById(`copy-${i}`); if (btn) { btn.innerHTML = 'Copied'; setTimeout(() => btn.innerHTML = 'Copy', 2000); } }} id={`copy-${i}`} className="absolute top-2 right-2 opacity-0 group-hover/msg:opacity-100 transition-opacity flex items-center gap-1.5 px-2 py-1 bg-white/10 rounded-md text-[10px] uppercase font-bold text-white/60 cursor-pointer">Copy</button>
                                 <div className="whitespace-pre-wrap font-light text-white mt-2" dangerouslySetInnerHTML={{__html: msg.content.replace(/\*\*(.*?)\*\*/g, '<b class="text-cyan-400 font-bold">$1</b>')}} />
                             </>
                         ) : (
                             <span className="whitespace-pre-wrap">{msg.content}</span>
                         )}
                     </div>
-                    
                     {msg.role === 'user' && (
                         <div className="w-6 h-6 md:w-8 md:h-8 rounded-full bg-white/10 flex items-center justify-center shrink-0 mt-1">
                             <User size={14} className="text-white/60" />
@@ -320,12 +299,9 @@ export default function AITutor() {
                  </div>
                </motion.div>
             ))}
-            
             {isLoading && (
-               <div className="flex gap-4 w-full justify-start items-center ml-2">
-                 <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center shrink-0 animate-pulse">
-                     <Bot size={16} className="text-cyan-500" />
-                 </div>
+               <div className="flex gap-4 w-full justify-start items-center ml-2 pb-4">
+                 <div className="w-8 h-8 rounded-full bg-cyan-500/20 flex items-center justify-center shrink-0 animate-pulse"><Bot size={16} className="text-cyan-500" /></div>
                  <div className="flex gap-1.5 px-4 py-2 opacity-50">
                     <motion.div animate={{y: [0,-3,0]}} transition={{repeat: Infinity, duration: 0.6}} className="w-2 h-2 bg-cyan-400 rounded-full" />
                     <motion.div animate={{y: [0,-3,0]}} transition={{repeat: Infinity, duration: 0.6, delay: 0.1}} className="w-2 h-2 bg-cyan-400 rounded-full" />
@@ -333,60 +309,40 @@ export default function AITutor() {
                  </div>
                </div>
             )}
-            
             <div ref={endOfMessagesRef} />
          </div>
       </div>
-
-      {/* Chat Summarizer & Input Area Container */}
-      <div className="w-full bg-black/40 backdrop-blur-xl border-t border-white/5 p-4 z-20">
-         <div className="max-w-3xl mx-auto space-y-4">
-            
+ 
+      {/* Footer Area (The Overlap Shield) */}
+      <footer className="w-full shrink-0 bg-black/80 backdrop-blur-3xl border-t border-white/5 py-3 md:py-6 px-4 z-[100] relative">
+         <div className="max-w-3xl mx-auto flex flex-col gap-4">
             {/* Chat Summarizer */}
-            <div className="px-2 md:px-0">
+            <div className="animate-in fade-in slide-in-from-bottom-2 duration-700">
                <ChatSummarizer messages={messages} />
             </div>
 
             {/* Input Bar */}
-            <div className="relative group flex flex-col items-center">
+            <div className="relative group w-full">
                <AnimatePresence>
                {selectedImage && (
-                   <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }} className="absolute -top-24 left-6 bg-[#111] p-1.5 rounded-xl border border-white/20 shadow-[0_0_20px_rgba(0,0,0,0.8)] flex flex-col items-end z-30">
-                       <button onClick={() => setSelectedImage(null)} className="absolute -top-2 -right-2 bg-red-500 text-white p-1 rounded-full cursor-pointer hover:scale-110 transition-all"><X size={12} /></button>
-                       <img src={selectedImage} alt="Preview" className="w-16 h-16 object-cover rounded-lg" />
+                   <motion.div initial={{ y: 20, opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: 20, opacity: 0 }} className="absolute -top-20 left-4 bg-[#111] p-1 rounded-lg border border-white/20 shadow-2xl z-[110]">
+                       <button onClick={() => setSelectedImage(null)} className="absolute -top-2 -right-2 bg-red-500 text-white p-0.5 rounded-full hover:scale-110"><X size={10} /></button>
+                       <img src={selectedImage} alt="Preview" className="w-12 h-12 object-cover rounded" />
                    </motion.div>
                )}
                </AnimatePresence>
 
-               <div className="absolute inset-2 -z-10 bg-gradient-to-r from-cyan-500 to-purple-500 rounded-[2rem] blur opacity-20 group-focus-within:opacity-40 transition duration-500"></div>
+               <div className="absolute inset-0 -z-10 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-[2rem] blur-xl opacity-50 group-focus-within:opacity-100 transition-opacity" />
                
-               <div className="relative flex items-center bg-[#111111] border border-white/10 rounded-[2rem] p-1 md:p-2 w-full shadow-xl">
-                   <button 
-                     onClick={() => fileInputRef.current?.click()}
-                     className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center shrink-0 cursor-pointer text-white/50 hover:text-cyan-400 hover:bg-cyan-500/10 rounded-full transition-all ml-1"
-                   >
-                       <Paperclip size={20} />
-                   </button>
-                   <input 
-                       value={input}
-                       onChange={(e) => setInput(e.target.value)}
-                       onKeyDown={(e) => { if(e.key === 'Enter') sendMessage(); }}
-                       placeholder={selectedImage ? "Ask about this image..." : "Message EduBot..."}
-                       disabled={isLoading}
-                       className="flex-1 bg-transparent px-2 md:px-4 py-3 md:py-4 outline-none text-white text-[14px] md:text-[15px] placeholder:text-white/30 disabled:opacity-50"
-                   />
-                   <button 
-                     onClick={sendMessage}
-                     disabled={isLoading || (!input.trim() && !selectedImage)}
-                     className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all disabled:opacity-30 disabled:hover:scale-100 shrink-0 cursor-pointer shadow-lg shadow-white/20 mr-1"
-                   >
-                       <Send size={18} className="ml-1 md:ml-0 md:size-20" />
-                   </button>
+               <div className="relative flex items-center bg-white/5 hover:bg-white/[0.07] border border-white/10 rounded-full p-1 w-full transition-all duration-300">
+                   <button onClick={() => fileInputRef.current?.click()} className="w-10 h-10 flex items-center justify-center shrink-0 text-white/30 hover:text-cyan-400 rounded-full transition-colors"><Paperclip size={18} /></button>
+                   <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if(e.key === 'Enter') sendMessage(); }} placeholder={selectedImage ? "Describe this image..." : "Type your question..."} disabled={isLoading} className="flex-1 bg-transparent px-2 py-3 outline-none text-white text-sm placeholder:text-white/20" />
+                   <button onClick={sendMessage} disabled={isLoading || (!input.trim() && !selectedImage)} className="w-10 h-10 rounded-full bg-white text-black flex items-center justify-center hover:scale-105 active:scale-95 transition-all disabled:opacity-20 shrink-0 shadow-lg shadow-white/10"><Send size={16} className="ml-0.5" /></button>
                </div>
-               <p className="text-center text-[8px] md:text-[10px] text-white/20 uppercase tracking-widest mt-3">StudyMate uses Llama 4 & Llama 3.3. Verify important facts.</p>
             </div>
+            <p className="text-center text-[9px] text-white/10 uppercase tracking-[0.2em]">StudyMate AI • Powered by Llama 3 & Groq Cloud</p>
          </div>
-      </div>
+      </footer>
     </div>
   );
 }
