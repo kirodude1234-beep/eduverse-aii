@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from 'framer-motion';
 import { Bot, Send, User, Settings, Plus, AlignLeft, X, History, MessageSquare, Moon, Volume2, Paperclip, Image as ImageIcon, Copy } from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
-import ChatSummarizer from '@/components/ChatSummarizer';
+import ChatSummarizerModal from '@/components/ChatSummarizerModal';
 import { BACKEND_URL } from '@/lib/config';
 
 interface ChatMessage {
@@ -25,6 +25,8 @@ export default function AITutor() {
   const [showSettings, setShowSettings] = useState(false);
   
   const [isSoundOn, setIsSoundOn] = useState(false);
+
+  const [showSummarizer, setShowSummarizer] = useState(false);
 
   useEffect(() => {
     try {
@@ -245,7 +247,13 @@ export default function AITutor() {
             </h2>
         </div>
         <div className="flex gap-4">
-            <button onClick={() => setShowSettings(true)} className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-colors text-white/80 gap-2 items-center text-xs font-bold uppercase tracking-widest hidden md:flex cursor-pointer border border-transparent active:border-cyan-500/50">
+            <button 
+                onClick={() => setShowSummarizer(true)}
+                className="px-4 py-2 rounded-xl bg-purple-500/10 text-purple-400 hover:bg-purple-500/20 active:scale-95 transition-all text-xs font-bold uppercase tracking-widest hidden md:flex items-center gap-2 cursor-pointer border-b-2 border-purple-500/30"
+            >
+                <Sparkles size={14} /> Summarize
+            </button>
+            <button onClick={() => setShowSettings(true)} className="px-4 py-2 rounded-xl bg-white/5 hover:bg-white/10 transition-all text-white/80 gap-2 items-center text-xs font-bold uppercase tracking-widest hidden md:flex cursor-pointer border border-transparent active:border-cyan-500/50">
                 <Settings size={14} /> Settings
             </button>
             <button 
@@ -316,11 +324,7 @@ export default function AITutor() {
       {/* Footer Area (The Overlap Shield) */}
       <footer className="w-full shrink-0 bg-black/80 backdrop-blur-3xl border-t border-white/5 py-3 md:py-6 px-4 z-[100] relative">
          <div className="max-w-3xl mx-auto flex flex-col gap-4">
-            {/* Chat Summarizer */}
-            <div className="animate-in fade-in slide-in-from-bottom-2 duration-700">
-               <ChatSummarizer messages={messages} />
-            </div>
-
+            
             {/* Input Bar */}
             <div className="relative group w-full">
                <AnimatePresence>
@@ -331,6 +335,14 @@ export default function AITutor() {
                    </motion.div>
                )}
                </AnimatePresence>
+
+               {/* Mobile/Compact Summarize Button */}
+               <button 
+                onClick={() => setShowSummarizer(true)}
+                className="md:hidden w-full mb-3 py-2.5 rounded-xl bg-purple-500/10 text-purple-400 border border-purple-500/20 text-[10px] font-black uppercase tracking-widest flex items-center justify-center gap-2"
+               >
+                  <Sparkles size={12} /> Summarize Conversation
+               </button>
 
                <div className="absolute inset-0 -z-10 bg-gradient-to-r from-cyan-500/20 to-purple-500/20 rounded-[2rem] blur-xl opacity-50 group-focus-within:opacity-100 transition-opacity" />
                
@@ -343,6 +355,13 @@ export default function AITutor() {
             <p className="text-center text-[9px] text-white/10 uppercase tracking-[0.2em]">StudyMate AI • Powered by Llama 3 & Groq Cloud</p>
          </div>
       </footer>
+
+      {/* The Ghost of the Summarizer Solution */}
+      <AnimatePresence>
+          {showSummarizer && (
+              <ChatSummarizerModal onClose={() => setShowSummarizer(false)} />
+          )}
+      </AnimatePresence>
     </div>
   );
 }
