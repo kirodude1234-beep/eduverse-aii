@@ -257,7 +257,7 @@ export default function AITutor() {
         </div>
       </div>
 
-      <div className="flex-1 overflow-y-auto w-full hide-scroll scroll-smooth pt-4 md:pt-8 relative z-0 pb-48">
+      <div className="flex-1 overflow-y-auto w-full hide-scroll scroll-smooth pt-4 md:pt-8 relative z-0 pb-4">
          <div className="max-w-3xl mx-auto w-full px-4 md:px-8 space-y-6 md:space-y-8">
             
             {messages.length === 1 && (
