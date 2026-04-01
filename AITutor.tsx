@@ -1,7 +1,11 @@
 'use client';
 
 import { motion, AnimatePresence } from 'framer-motion';
-import { Bot, Send, User, Settings, Plus, AlignLeft, X, History, MessageSquare, Moon, Volume2, Paperclip, Image as ImageIcon, Copy, Sparkles } from 'lucide-react';
+import { 
+  Bot, Send, User, Settings, Plus, AlignLeft, X, History, 
+  MessageSquare, Moon, Volume2, Paperclip, Image as ImageIcon, 
+  Copy, Sparkles 
+} from 'lucide-react';
 import { useState, useRef, useEffect } from 'react';
 import ChatSummarizerModal from '@/components/ChatSummarizerModal';
 import { BACKEND_URL } from '@/lib/config';
